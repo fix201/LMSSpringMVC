@@ -19,7 +19,7 @@ public class BorrowerService extends GeneralService {
 	public String getBorrowerName(Integer cardNo) {
 		
 		try {
-			return brwDao.readBorrowerName(cardNo);
+			return brwDao.readBorrowerByCardNo(cardNo);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -74,7 +74,7 @@ public class BorrowerService extends GeneralService {
 	public List<Book> getBooksBorrowed(Integer cardNo, Integer branchNo) {
 
 		try {
-			return bDao.readAllBooksBorrowed(cardNo, branchNo);
+			return bDao.readAllBooksBorrowedByBranch(cardNo, branchNo);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		} 

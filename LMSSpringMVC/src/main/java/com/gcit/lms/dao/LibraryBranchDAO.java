@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import com.gcit.lms.entity.LibraryBranch;
 
@@ -19,6 +20,7 @@ import com.gcit.lms.entity.LibraryBranch;
  * @author Incognito
  *
  */
+@Repository
 public class LibraryBranchDAO extends BaseDAO<LibraryBranch> implements ResultSetExtractor<List<LibraryBranch>> {
 
 	public void addLibraryBranch(LibraryBranch libraryBranch) throws ClassNotFoundException, SQLException {
@@ -64,8 +66,13 @@ public class LibraryBranchDAO extends BaseDAO<LibraryBranch> implements ResultSe
 		return mysqlTemplate.query("select * from tbl_library_branch", this);
 	}
 
-	public LibraryBranch readLibraryBranch(Integer branchId) throws ClassNotFoundException, SQLException {
+	public LibraryBranch readLibraryBranchById(Integer branchId) throws ClassNotFoundException, SQLException {
 		return mysqlTemplate.query("select * from tbl_library_branch where branchId = ?", new Object[] { branchId }, this).get(0);
+	}
+	
+	public List<LibraryBranch> readLibraryBranchesByName(String branchName) throws ClassNotFoundException, SQLException {
+		branchName = "%"+branchName+"%";
+		return mysqlTemplate.query("select * from tbl_library_branch where branchName like ?", new Object[] { branchName }, this);
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import com.gcit.lms.entity.Genre;
 
@@ -19,6 +20,7 @@ import com.gcit.lms.entity.Genre;
  * @author Incognito
  *
  */
+@Repository
 public class GenreDAO extends BaseDAO<Genre> implements ResultSetExtractor<List<Genre>>{
 
 
@@ -51,6 +53,15 @@ public class GenreDAO extends BaseDAO<Genre> implements ResultSetExtractor<List<
 	
 	public Genre readGenreById(Integer genreId) throws ClassNotFoundException, SQLException {
 		return mysqlTemplate.query("select * from tbl_genre where genre_id = ?", new Object[] {genreId}, this).get(0);
+	}
+	
+	public List<Genre> readGenresByName(String genreName) throws ClassNotFoundException, SQLException {
+		genreName = "%" + genreName + "%";
+		return mysqlTemplate.query("select * from tbl_genre where genre_name like ?", new Object[] {genreName}, this);
+	}
+	
+	public List<Genre> readBookGenres(Integer genreId) throws ClassNotFoundException, SQLException {
+		return mysqlTemplate.query("select * from tbl_genre where genre_id in (select genre_id from tbl_book_genres where bookId = ?)", new Object[] {genreId}, this);
 	}
 
 	public List<Genre> extractData(ResultSet rs) throws SQLException {

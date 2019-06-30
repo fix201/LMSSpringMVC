@@ -1,6 +1,13 @@
 package com.gcit.lms.service;
 
 import java.sql.SQLException;
+import java.util.List;
+
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.gcit.lms.entity.Author;
 import com.gcit.lms.entity.Book;
@@ -10,8 +17,40 @@ import com.gcit.lms.entity.Genre;
 import com.gcit.lms.entity.LibraryBranch;
 import com.gcit.lms.entity.Publisher;
 
+@RestController
 public class AdminService extends GeneralService {
 
+	@RequestMapping(value = "/admin/readAuthors", method = RequestMethod.GET, produces = "application/json")
+	public List<Author> readAuthors(@RequestParam(value = "authorName") String authorName) {
+		return readAuthorsGS(authorName);
+	}
+	
+	@RequestMapping(value = "/admin/readBooks", method = RequestMethod.GET, produces = "application/json")
+	public List<Book> readBooks(@RequestParam(value = "title") String title) {
+		return readBooksGS(title);
+	}
+	
+	@RequestMapping(value = "/admin/readLibraryBranches", method = RequestMethod.GET, produces = "application/json")
+	public List<LibraryBranch> readLibraryBranches(@RequestParam(value = "branchName") String branchName) {
+		return readBranchesGS(branchName);
+	}
+	
+	@RequestMapping(value = "/admin/readGenres", method = RequestMethod.GET, produces = "application/json")
+	public List<Genre> readGenres(@RequestParam(value = "genreName") String genreName) {
+		return readGenresGS(genreName);
+	}
+	
+	@RequestMapping(value = "/admin/readBorrowers", method = RequestMethod.GET, produces = "application/json")
+	public List<Borrower> readBorrowers(@RequestParam(value = "name") String name) {
+		return readBorrowersGS(name);
+	}
+	
+	@RequestMapping(value = "/admin/readPublishers", method = RequestMethod.GET, produces = "application/json")
+	public List<Publisher> readPublishers(@RequestParam(value = "publisherName") String publisherName) {
+		return readPublishersGS(publisherName);
+	}
+	
+	@RequestMapping(value = "/add", method = RequestMethod.GET, produces = "application/json")
 	public void add(Object obj) {
 
 		try {
@@ -66,6 +105,7 @@ public class AdminService extends GeneralService {
 		}
 	}
 
+	@Transactional
 	public void update(Object obj) {
 
 		try {
@@ -97,6 +137,7 @@ public class AdminService extends GeneralService {
 		}
 	}
 
+	@Transactional
 	public void delete(Object obj) {
 
 		try {

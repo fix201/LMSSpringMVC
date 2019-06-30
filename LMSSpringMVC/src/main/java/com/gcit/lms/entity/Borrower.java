@@ -15,7 +15,7 @@ public class Borrower {
 	private String name;
 	private String address;
 	private String phone;
-	private List<BookLoan> bookLoans;
+	private List<Book> books;
 	
 	public Integer getCardNo() {
 		return cardNo;
@@ -41,23 +41,23 @@ public class Borrower {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public List<BookLoan> getBookLoans() {
-		return bookLoans;
+	public List<Book> getBooks() {
+		return books;
 	}
-	public void setBookLoans(List<BookLoan> bookLoans) {
-		this.bookLoans = bookLoans;
+	public void setBooks(List<Book> books) {
+		this.books = books;
 	}
 	@Override
 	public String toString() {
 		return "Borrower [cardNo=" + cardNo + ", name=" + name + ", address=" + address + ", phone=" + phone
-				+ ", bookLoans=" + bookLoans + "]";
+				+ ", books=" + books + "]";
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
-		result = prime * result + ((bookLoans == null) ? 0 : bookLoans.hashCode());
+		result = prime * result + ((books == null) ? 0 : books.hashCode());
 		result = prime * result + ((cardNo == null) ? 0 : cardNo.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
@@ -77,10 +77,10 @@ public class Borrower {
 				return false;
 		} else if (!address.equals(other.address))
 			return false;
-		if (bookLoans == null) {
-			if (other.bookLoans != null)
+		if (books == null) {
+			if (other.books != null)
 				return false;
-		} else if (!bookLoans.equals(other.bookLoans))
+		} else if (!books.equals(other.books))
 			return false;
 		if (cardNo == null) {
 			if (other.cardNo != null)

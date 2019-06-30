@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import com.gcit.lms.entity.Borrower;
 
@@ -19,6 +20,7 @@ import com.gcit.lms.entity.Borrower;
  * @borrower Incognito
  *
  */
+@Repository
 public class BorrowerDAO extends BaseDAO<Borrower> implements ResultSetExtractor<List<Borrower>> {
 
 	public void addBorrower(Borrower borrower) throws ClassNotFoundException, SQLException {
@@ -65,7 +67,16 @@ public class BorrowerDAO extends BaseDAO<Borrower> implements ResultSetExtractor
 		return false;
 	}
 
-	public String readBorrowerName(Integer cardNo) throws ClassNotFoundException, SQLException {
+	public List<Borrower> readAllBorrowers() throws  SQLException {
+		return mysqlTemplate.query("select * from tbl_borrower", this);
+	}
+	
+	public List<Borrower> readBorrowerByName(String name) throws ClassNotFoundException, SQLException {
+		name = "%"+name+"%";
+		return mysqlTemplate.query("select * from tbl_borrower where name like ? ",new Object[] { name }, this);
+	}
+	
+	public String readBorrowerByCardNo(Integer cardNo) throws ClassNotFoundException, SQLException {
 		ResultSet rs = (ResultSet) mysqlTemplate.query("select * from tbl_borrower where cardNo = ?",
 				new Object[] { cardNo }, this);
 		if (rs.next() && rs.getString("cardNo") != null) {
@@ -73,9 +84,9 @@ public class BorrowerDAO extends BaseDAO<Borrower> implements ResultSetExtractor
 		}
 		return null;
 	}
-
-	public List<Borrower> readAllBorrowers() throws  SQLException {
-		return mysqlTemplate.query("select * from tbl_borrower", this);
+	
+	public List<Borrower> readBorrowersForBranch(Integer branchId) throws ClassNotFoundException {
+		return mysqlTemplate.query("select * from tbl_borrower where cardNo in (select cardNo from tbl_book_loans where branchId = ?)",new Object[] { branchId }, this);
 	}
 
 	@Override
@@ -85,8 +96,12 @@ public class BorrowerDAO extends BaseDAO<Borrower> implements ResultSetExtractor
 			Borrower borrower = new Borrower();
 			borrower.setCardNo(rs.getInt("cardNo"));
 			borrower.setName(rs.getString("name"));
+			borrower.setAddress(rs.getString("address"));
+			borrower.setPhone(rs.getString("phone"));
 			borrowers.add(borrower);
 		}
 		return borrowers;
 	}
+
+	
 }

@@ -4,9 +4,11 @@
 package com.gcit.lms.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.gcit.lms.dao.AuthorDAO;
 import com.gcit.lms.dao.BookCopiesDAO;
@@ -28,6 +30,7 @@ import com.gcit.lms.entity.Publisher;
  * @author Incognito
  *
  */
+@RestController
 public abstract class GeneralService {
 
 	@Autowired
@@ -46,95 +49,126 @@ public abstract class GeneralService {
 	BookLoanDAO blDao;
 	@Autowired
 	BookCopiesDAO bcDao;
-	
-	public List<LibraryBranch> readAllBranches() {
+
+	public List<Author> readAuthorsGS(String authorName) {
+		List<Author> authors = new ArrayList<>();
 		try {
-			return lbDao.readAllLibraryBranches();
-		} catch (ClassNotFoundException | SQLException e) {
+			if (authorName != null && authorName.length() > 0) {
+				authors = aDao.readAllAuthorsByName(authorName);
+			} else {
+				authors = aDao.readAllAuthors();
+			}
+			for (Author a : authors) {
+				a.setBooks(bDao.readAllBooksByAuthor(a.getAuthorId()));
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
-		} 
-		return null;
+			System.out.println("Something went wrong. Failed to get all authors");
+		}
+		return authors;
 	}
 
-	public List<Author> readAllAuthors() {
-		
+	public List<Book> readBooksGS(String bookTitle) {
+		List<Book> books = new ArrayList<>();
 		try {
-			return aDao.readAllAuthors();
-		} catch (ClassNotFoundException | SQLException e) {
+			if (bookTitle != null && bookTitle.length() > 0) {
+				books = bDao.readAllBooksByTitle(bookTitle);
+			} else {
+				books = bDao.readAllBooks();
+			}
+			for (Book b : books) {
+				b.setAuthors(aDao.readBookAuthors(b.getBookId()));
+				b.setGenres(gDao.readBookGenres(b.getBookId()));
+				b.setPublisher(pDao.readBookPublisher(b.getBookId()));
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
-		} 
-		return null;
+			System.out.println("Something went wrong. Failed to get all books");
+		}
+		return books;
 	}
 
-	public List<Book> readAllBooks() {
-		
+	public List<LibraryBranch> readBranchesGS(String branchName) {
+		System.out.println("here2");
+		List<LibraryBranch> libraryBranches = new ArrayList<>();
 		try {
-			return bDao.readAllBooks();
-		} catch (ClassNotFoundException | SQLException e) {
+			if (branchName != null && branchName.length() > 0) {
+				libraryBranches = lbDao.readLibraryBranchesByName(branchName);
+			} else {
+				libraryBranches = lbDao.readAllLibraryBranches();
+			}
+			for (LibraryBranch lb : libraryBranches) {
+				lb.setBooks(bDao.readAllBooksByBranch(lb.getBranchId()));
+				lb.setBorrowers(brwDao.readBorrowersForBranch(lb.getBranchId()));
+				lb.setBookCopies(bcDao.readAllBooksForBranch(lb.getBranchId()));
+				lb.setBookLoans(blDao.readBookLoansForBranch(lb.getBranchId()));
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
-		} 
-		return null;
+		}
+		return libraryBranches;
 	}
 
-	public List<Book> readAllBooksForBranch(Integer branchId) {
-		
-		BookCopies books = new BookCopies();
-		books.setBranchId(branchId);
+	public List<Genre> readGenresGS(String genreName) {
+		List<Genre> genres = new ArrayList<>();
 		try {
-			
-			return bDao.readAllBooksByBranch(branchId);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		} 
-		return null;
-	}
-
-	public LibraryBranch getLibraryBranch(Integer branchId) {
-		try {
-			return lbDao.readLibraryBranch(branchId);
+			if (genreName != null && genreName.length() > 0) {
+				genres = gDao.readGenresByName(genreName);
+			} else {
+				genres = gDao.readAllGenres();
+			}
+			for (Genre g : genres) {
+				g.setBooks(bDao.readAllBooksByGenre(g.getGenreId()));
+			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
+		return genres;
+	}
 
-		return null;
-	}
-	
-	public List<Genre> getAllGenres(){
-		
+	public List<Borrower> readBorrowersGS(String name) {
+		List<Borrower> borrowers = new ArrayList<>();
 		try {
-			return gDao.readAllGenres();
-		} catch (SQLException e) {
+			if (name != null && name.length() > 0) {
+				borrowers = brwDao.readBorrowerByName(name);
+			} else {
+				borrowers = brwDao.readAllBorrowers();
+			}
+			for (Borrower brw : borrowers) {
+				brw.setBooks(bDao.readAllBooksBorrowed(brw.getCardNo()));
+			}
+		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
-			
-		} 
-		return null;
+		}
+		return borrowers;
 	}
-	
-	public List<Publisher> getAllPublishers(){
+
+	public List<Publisher> readPublishersGS(String publisherName) {
+		List<Publisher> publishers = new ArrayList<>();
 		try {
-			return pDao.readAllPublishers();
+			if (publisherName != null && publisherName.length() > 0) {
+				publishers = pDao.readAllPublishersByName(publisherName);
+			} else {
+				publishers = pDao.readAllPublishers();
+			}
+			for(Publisher p : publishers) {
+				 p.setBooks(bDao.readAllBooksByPublisher(p.getPublisherId()));
+			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-			
-		} 
-		return null;
+		}
+		return publishers;
 	}
-	
-	public List<Borrower> getAllBorrowers(){
+
+	public List<Book> readAllBooksForBranchGS(Integer branchId) {
+
+		BookCopies books = new BookCopies();
+		books.setBranchId(branchId);
 		try {
-			return brwDao.readAllBorrowers();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} 
-		return null;
-	}
-	
-	public List<Author> getAllAuthors(){
-		try {
-			return aDao.readAllAuthors();
+			return bDao.readAllBooksByBranch(branchId);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-		} 
+		}
 		return null;
 	}
 

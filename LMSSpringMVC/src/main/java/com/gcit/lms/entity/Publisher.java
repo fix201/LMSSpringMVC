@@ -3,6 +3,8 @@
  */
 package com.gcit.lms.entity;
 
+import java.util.List;
+
 /**
  * @author incognito
  *
@@ -13,6 +15,7 @@ public class Publisher {
 	private String publisherName;
 	private String publisherAddress;
 	private String publisherPhone;
+	private List<Book> books;
 	/**
 	 * @return the publisherId
 	 */
@@ -106,6 +109,18 @@ public class Publisher {
 	public String toString() {
 		return "Publisher [publisherId=" + publisherId + ", publisherName=" + publisherName + ", publisherAddress="
 				+ publisherAddress + ", publisherPhone=" + publisherPhone + "]";
+	}
+	/**
+	 * @return the books
+	 */
+	public List<Book> getBooks() {
+		return books;
+	}
+	/**
+	 * @param books the books to set
+	 */
+	public void setBooks(List<Book> books) {
+		this.books = books;
 	}	
 	
 	

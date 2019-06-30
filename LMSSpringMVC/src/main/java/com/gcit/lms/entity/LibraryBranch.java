@@ -14,6 +14,8 @@ public class LibraryBranch {
 	private Integer branchId;
 	private String branchName;
 	private String branchAddress;
+	private List<Book> books;
+	private List<Borrower> borrowers;
 	private List<BookLoan> bookLoans;
 	private List<BookCopies> bookCopies;
 	/**
@@ -76,10 +78,34 @@ public class LibraryBranch {
 	public void setBookCopies(List<BookCopies> bookCopies) {
 		this.bookCopies = bookCopies;
 	}
+	/**
+	 * @return the books
+	 */
+	public List<Book> getBooks() {
+		return books;
+	}
+	/**
+	 * @param books the books to set
+	 */
+	public void setBooks(List<Book> books) {
+		this.books = books;
+	}
+	/**
+	 * @return the borrowers
+	 */
+	public List<Borrower> getBorrowers() {
+		return borrowers;
+	}
+	/**
+	 * @param borrowers the borrowers to set
+	 */
+	public void setBorrowers(List<Borrower> borrowers) {
+		this.borrowers = borrowers;
+	}
 	@Override
 	public String toString() {
 		return "LibraryBranch [branchId=" + branchId + ", branchName=" + branchName + ", branchAddress=" + branchAddress
-				+ ", bookLoans=" + bookLoans + ", bookCopies=" + bookCopies + "]";
+				+ ", books=" + books + ", bookLoans=" + bookLoans + ", bookCopies=" + bookCopies + "]";
 	}
 	@Override
 	public int hashCode() {
@@ -87,6 +113,7 @@ public class LibraryBranch {
 		int result = 1;
 		result = prime * result + ((bookCopies == null) ? 0 : bookCopies.hashCode());
 		result = prime * result + ((bookLoans == null) ? 0 : bookLoans.hashCode());
+		result = prime * result + ((books == null) ? 0 : books.hashCode());
 		result = prime * result + ((branchAddress == null) ? 0 : branchAddress.hashCode());
 		result = prime * result + ((branchId == null) ? 0 : branchId.hashCode());
 		result = prime * result + ((branchName == null) ? 0 : branchName.hashCode());
@@ -111,6 +138,11 @@ public class LibraryBranch {
 				return false;
 		} else if (!bookLoans.equals(other.bookLoans))
 			return false;
+		if (books == null) {
+			if (other.books != null)
+				return false;
+		} else if (!books.equals(other.books))
+			return false;
 		if (branchAddress == null) {
 			if (other.branchAddress != null)
 				return false;
@@ -128,7 +160,4 @@ public class LibraryBranch {
 			return false;
 		return true;
 	}
-	
-	
-
 }

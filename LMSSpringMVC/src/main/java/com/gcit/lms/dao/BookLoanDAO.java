@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.stereotype.Repository;
 
 import com.gcit.lms.entity.BookLoan;
 
@@ -16,6 +17,7 @@ import com.gcit.lms.entity.BookLoan;
  * @author Incognito
  *
  */
+@Repository
 public class BookLoanDAO extends BaseDAO<BookLoan> implements ResultSetExtractor<List<BookLoan>> {
 
 	public void addBookLoan(BookLoan bookLoan) throws ClassNotFoundException, SQLException {
@@ -58,6 +60,10 @@ public class BookLoanDAO extends BaseDAO<BookLoan> implements ResultSetExtractor
 	public BookLoan readBookLoan(BookLoan bookLoan) throws ClassNotFoundException {
 		return mysqlTemplate.query("select * from tbl_book_loans where bookId = ? and branchId = ? and cardNo = ?",
 				new Object[] { bookLoan.getBookId(), bookLoan.getBranchId(), bookLoan.getCardNo() }, this).get(0);
+	}
+	
+	public List<BookLoan> readBookLoansForBranch(Integer branchId) throws ClassNotFoundException {
+		return mysqlTemplate.query("select * from tbl_book_loans", this);
 	}
 
 	@Override
