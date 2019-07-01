@@ -43,6 +43,7 @@ public class LMSConfig {
 		ds.setUrl(url);
 		ds.setUsername(username);
 		ds.setPassword(password);
+		ds.setDefaultAutoCommit(Boolean.FALSE);
 		return ds;
 	}
 
