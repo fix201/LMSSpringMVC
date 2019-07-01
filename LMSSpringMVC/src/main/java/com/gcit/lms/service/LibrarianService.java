@@ -14,7 +14,12 @@ import com.gcit.lms.entity.LibraryBranch;
 
 public class LibrarianService extends GeneralService {
 
-	@RequestMapping(value = "/borrower/updateLibraryBranch", method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = "/librarian/readLibraryBranches", method = RequestMethod.GET, produces = "application/json")
+	public List<LibraryBranch> readLibraryBranches(@RequestParam(value = "branchName") String branchName) {
+		return readBranchesGS(branchName);
+	}
+	
+	@RequestMapping(value = "/librarian/updateLibraryBranch", method = RequestMethod.POST, consumes = "application/json")
 	public boolean updateBranch(@RequestBody LibraryBranch libraryBranch) {
 
 		try {
@@ -26,7 +31,7 @@ public class LibrarianService extends GeneralService {
 		return false;
 	}
 
-	@RequestMapping(value = "/borrower/updateBranchCopies", method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = "/librarian/updateBranchCopies", method = RequestMethod.POST, consumes = "application/json")
 	public boolean updateBranchCopies(@RequestBody BookCopies bookCopies) {
 
 		try {
@@ -38,12 +43,11 @@ public class LibrarianService extends GeneralService {
 		return false;
 	}
 
-	@RequestMapping(value = "/borrower/addBookCopy", method = RequestMethod.POST, consumes = "application/json")
-	public boolean addBookCopy(@RequestBody Book book, @RequestBody BookCopies bookCopies) {
+	@RequestMapping(value = "/librarian/addBookCopy", method = RequestMethod.POST, consumes = "application/json")
+	public boolean addBookCopy(@RequestBody BookCopies bookCopies) {
 
 		try {
-			bDao.addBook(book);
-			bcDao.updateBookCopies(bookCopies);
+			bcDao.addBookCopies(bookCopies);
 			return true;
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
@@ -51,7 +55,7 @@ public class LibrarianService extends GeneralService {
 		return false;
 	}
 
-	@RequestMapping(value = "/borrower/getBookCopiesForBranch", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/librarian/getBookCopiesForBranch", method = RequestMethod.GET, produces = "application/json")
 	public List<Book> getBookCopiesForBranch(@RequestParam(value = "branchId") Integer branchId) {
 
 		try {
@@ -64,7 +68,7 @@ public class LibrarianService extends GeneralService {
 		return null;
 	}
 
-	@RequestMapping(value = "/borrower/getNoOfCopiesForBranch", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/librarian/getNoOfCopiesForBranch", method = RequestMethod.GET, produces = "application/json")
 	public BookCopies getNoOfCopiesForBranch(@RequestParam(value = "bookId") Integer bookId, @RequestParam(value = "branchId") Integer branchId) {
 
 		try {
