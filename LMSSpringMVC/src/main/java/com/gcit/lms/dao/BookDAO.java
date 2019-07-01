@@ -3,9 +3,11 @@
  */
 package com.gcit.lms.dao;
 
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,11 +32,11 @@ public class BookDAO extends BaseDAO<Book> implements ResultSetExtractor<List<Bo
 	public Integer addBookGetPK(Book book) throws ClassNotFoundException, SQLException {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		mysqlTemplate.update(connection -> {
-			PreparedStatement ps = connection.prepareStatement("insert into tbl_book (title) values (?)");
+			PreparedStatement ps = connection.prepareStatement("insert into tbl_book (title) values (?)", Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, book.getTitle());
 			return ps;
 		}, keyHolder);
-		return (Integer) keyHolder.getKey();
+		return ((BigInteger) keyHolder.getKey()).intValue();
 	}
 
 	public void addBookAuthors(Integer bookId, Integer authorId) throws ClassNotFoundException, SQLException {

@@ -6,6 +6,11 @@ package com.gcit.lms.service;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.gcit.lms.entity.Book;
 import com.gcit.lms.entity.BookLoan;
 import com.gcit.lms.entity.Borrower;
@@ -16,8 +21,9 @@ import com.gcit.lms.entity.Borrower;
  */
 public class BorrowerService extends GeneralService {
 
-	public String getBorrowerName(Integer cardNo) {
-		
+	@RequestMapping(value = "/borrower/getBorrowerName", method = RequestMethod.GET, produces = "application/json")
+	public String getBorrowerName(@RequestParam(value = "cardNo") Integer cardNo) {
+
 		try {
 			return brwDao.readBorrowerByCardNo(cardNo);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -26,7 +32,8 @@ public class BorrowerService extends GeneralService {
 		return null;
 	}
 
-	public boolean validateBorrower(Borrower borrower) {
+	@RequestMapping(value = "/borrower/validateBorrower", method = RequestMethod.POST, produces = "application/json")
+	public boolean validateBorrower(@RequestBody Borrower borrower) {
 
 		try {
 			if (brwDao.validateBorrower(borrower)) {
@@ -38,7 +45,8 @@ public class BorrowerService extends GeneralService {
 		return false;
 	}
 
-	public boolean addBookLoan(BookLoan bookLoan) {
+	@RequestMapping(value = "/borrower/addBookLoan", method = RequestMethod.POST, produces = "application/json")
+	public boolean addBookLoan(@RequestBody BookLoan bookLoan) {
 
 		try {
 			blDao.addBookLoan(bookLoan);
@@ -48,8 +56,9 @@ public class BorrowerService extends GeneralService {
 		}
 		return false;
 	}
-	
-	public boolean removeBookLoan(BookLoan bookLoan) {
+
+	@RequestMapping(value = "/borrower/removeBookLoan", method = RequestMethod.POST, produces = "application/json")
+	public boolean removeBookLoan(@RequestBody BookLoan bookLoan) {
 
 		try {
 			blDao.updateAddCopies(bookLoan);
@@ -59,26 +68,28 @@ public class BorrowerService extends GeneralService {
 		}
 		return false;
 	}
-	
-	public boolean updateBookLoan(BookLoan bookLoan) {
+
+	@RequestMapping(value = "/borrower/updateBookLoan", method = RequestMethod.POST, produces = "application/json")
+	public boolean updateBookLoan(@RequestBody BookLoan bookLoan) {
 
 		try {
 			blDao.updateBookLoan(bookLoan);
 			return true;
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-		} 
+		}
 		return false;
 	}
-	
-	public List<Book> getBooksBorrowed(Integer cardNo, Integer branchNo) {
+
+	@RequestMapping(value = "/borrower/getBooksBorrowed", method = RequestMethod.GET, produces = "application/json")
+	public List<Book> getBooksBorrowed(@RequestParam(value = "cardNo") Integer cardNo, @RequestParam(value = "branchNo") Integer branchNo) {
 
 		try {
 			return bDao.readAllBooksBorrowedByBranch(cardNo, branchNo);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-		} 
+		}
 		return null;
 	}
-	
+
 }

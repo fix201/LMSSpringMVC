@@ -3,9 +3,11 @@
  */
 package com.gcit.lms.dao;
 
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,11 +33,11 @@ public class PublisherDAO extends BaseDAO<Publisher> implements ResultSetExtract
 	public Integer addPublisherGetPK(Publisher publisher) throws ClassNotFoundException, SQLException {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		mysqlTemplate.update(connection -> {
-			PreparedStatement ps = connection.prepareStatement("insert into tbl_publisher (publisherName) values (?)");
+			PreparedStatement ps = connection.prepareStatement("insert into tbl_publisher (publisherName) values (?)", Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, publisher.getPublisherName());
 			return ps;
 		}, keyHolder);
-		return (Integer) keyHolder.getKey();
+		return ((BigInteger) keyHolder.getKey()).intValue();
 	}
 
 	public void addPublisherAddress(Integer publisherId, String publisherAddress)

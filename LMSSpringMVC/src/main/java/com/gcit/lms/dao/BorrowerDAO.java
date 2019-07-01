@@ -3,9 +3,11 @@
  */
 package com.gcit.lms.dao;
 
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,11 +33,11 @@ public class BorrowerDAO extends BaseDAO<Borrower> implements ResultSetExtractor
 	public Integer addBorrowerGetPK(Borrower borrower) throws ClassNotFoundException, SQLException {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		mysqlTemplate.update(connection -> {
-			PreparedStatement ps = connection.prepareStatement("insert into tbl_borrower (borrower_name) values (?)");
+			PreparedStatement ps = connection.prepareStatement("insert into tbl_borrower (borrower_name) values (?)", Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, borrower.getName());
 			return ps;
 		}, keyHolder);
-		return (Integer) keyHolder.getKey();
+		return ((BigInteger) keyHolder.getKey()).intValue();
 	}
 
 	public void addBorrowerAddress(Integer borrowerId, String borrowerAddress)
@@ -59,9 +61,9 @@ public class BorrowerDAO extends BaseDAO<Borrower> implements ResultSetExtractor
 	}
 
 	public boolean validateBorrower(Borrower borrower) throws SQLException {
-		ResultSet rs = (ResultSet) mysqlTemplate.query("select cardNo from tbl_borrower where cardNo = ?",
+		List<Borrower> brw =  mysqlTemplate.query("select * from tbl_borrower where cardNo = ?",
 				new Object[] { borrower.getCardNo() }, this);
-		if (rs.next() && rs.getString("cardNo") != null) {
+		if(brw != null && brw.size() > 0) {
 			return true;
 		}
 		return false;
@@ -77,10 +79,10 @@ public class BorrowerDAO extends BaseDAO<Borrower> implements ResultSetExtractor
 	}
 	
 	public String readBorrowerByCardNo(Integer cardNo) throws ClassNotFoundException, SQLException {
-		ResultSet rs = (ResultSet) mysqlTemplate.query("select * from tbl_borrower where cardNo = ?",
+		List<Borrower> brw =  mysqlTemplate.query("select * from tbl_borrower where cardNo = ?",
 				new Object[] { cardNo }, this);
-		if (rs.next() && rs.getString("cardNo") != null) {
-			return rs.getString("name");
+		if(brw != null && brw.size() > 0) {
+			return brw.get(0).getName();
 		}
 		return null;
 	}
