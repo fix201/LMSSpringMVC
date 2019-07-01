@@ -22,7 +22,8 @@ import com.gcit.lms.entity.Borrower;
  */
 public class BorrowerService extends GeneralService {
 
-	@Transactional @RequestMapping(value = "/borrower/getBorrowerName", method = RequestMethod.GET, produces = "application/json")
+	@Transactional
+	@RequestMapping(value = "/borrower/getBorrowerName", method = RequestMethod.GET, produces = "application/json")
 	public String getBorrowerName(@RequestParam(value = "cardNo") Integer cardNo) {
 
 		try {
@@ -33,7 +34,8 @@ public class BorrowerService extends GeneralService {
 		return null;
 	}
 
-	@Transactional @RequestMapping(value = "/borrower/validateBorrower", method = RequestMethod.POST, produces = "application/json")
+	@Transactional
+	@RequestMapping(value = "/borrower/validateBorrower", method = RequestMethod.POST, produces = "application/json")
 	public boolean validateBorrower(@RequestBody Borrower borrower) {
 
 		try {
@@ -46,7 +48,8 @@ public class BorrowerService extends GeneralService {
 		return false;
 	}
 
-	@Transactional @RequestMapping(value = "/borrower/addBookLoan", method = RequestMethod.POST, produces = "application/json")
+	@Transactional
+	@RequestMapping(value = "/borrower/addBookLoan", method = RequestMethod.POST, produces = "application/json")
 	public boolean addBookLoan(@RequestBody BookLoan bookLoan) {
 
 		try {
@@ -58,7 +61,8 @@ public class BorrowerService extends GeneralService {
 		return false;
 	}
 
-	@Transactional @RequestMapping(value = "/borrower/removeBookLoan", method = RequestMethod.POST, produces = "application/json")
+	@Transactional
+	@RequestMapping(value = "/borrower/removeBookLoan", method = RequestMethod.POST, produces = "application/json")
 	public boolean removeBookLoan(@RequestBody BookLoan bookLoan) {
 
 		try {
@@ -70,7 +74,8 @@ public class BorrowerService extends GeneralService {
 		return false;
 	}
 
-	@Transactional @RequestMapping(value = "/borrower/updateBookLoan", method = RequestMethod.POST, produces = "application/json")
+	@Transactional
+	@RequestMapping(value = "/borrower/updateBookLoan", method = RequestMethod.POST, produces = "application/json")
 	public boolean updateBookLoan(@RequestBody BookLoan bookLoan) {
 
 		try {
@@ -82,8 +87,10 @@ public class BorrowerService extends GeneralService {
 		return false;
 	}
 
-	@Transactional @RequestMapping(value = "/borrower/getBooksBorrowed", method = RequestMethod.GET, produces = "application/json")
-	public List<Book> getBooksBorrowed(@RequestParam(value = "cardNo") Integer cardNo, @RequestParam(value = "branchNo") Integer branchNo) {
+	@Transactional
+	@RequestMapping(value = "/borrower/getBooksBorrowed", method = RequestMethod.GET, produces = "application/json")
+	public List<Book> getBooksBorrowed(@RequestParam(value = "cardNo") Integer cardNo,
+			@RequestParam(value = "branchNo") Integer branchNo) {
 
 		try {
 			return bDao.readAllBooksBorrowedByBranch(cardNo, branchNo);

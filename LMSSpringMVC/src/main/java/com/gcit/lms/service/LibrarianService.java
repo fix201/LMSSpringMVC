@@ -15,7 +15,8 @@ import com.gcit.lms.entity.LibraryBranch;
 
 public class LibrarianService extends GeneralService {
 
-	@Transactional @RequestMapping(value = "/librarian/readLibraryBranches", method = RequestMethod.GET, produces = "application/json")
+	@Transactional
+	@RequestMapping(value = "/librarian/readLibraryBranches", method = RequestMethod.GET, produces = "application/json")
 	public List<LibraryBranch> readLibraryBranches(@RequestParam(value = "branchName") String branchName) {
 		return readBranchesGS(branchName);
 	}
