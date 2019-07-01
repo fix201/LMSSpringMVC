@@ -3,6 +3,7 @@ package com.gcit.lms.service;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,36 +21,43 @@ import com.gcit.lms.entity.Publisher;
 @RestController
 public class AdminService extends GeneralService {
 
+	@Transactional
 	@RequestMapping(value = "/admin/readAuthors", method = RequestMethod.GET, produces = "application/json")
 	public List<Author> readAuthors(@RequestParam(value = "authorName") String authorName) {
 		return readAuthorsGS(authorName);
 	}
 
+	@Transactional
 	@RequestMapping(value = "/admin/readBooks", method = RequestMethod.GET, produces = "application/json")
 	public List<Book> readBooks(@RequestParam(value = "title") String title) {
 		return readBooksGS(title);
 	}
 
+	@Transactional
 	@RequestMapping(value = "/admin/readLibraryBranches", method = RequestMethod.GET, produces = "application/json")
 	public List<LibraryBranch> readLibraryBranches(@RequestParam(value = "branchName") String branchName) {
 		return readBranchesGS(branchName);
 	}
 
+	@Transactional
 	@RequestMapping(value = "/admin/readGenres", method = RequestMethod.GET, produces = "application/json")
 	public List<Genre> readGenres(@RequestParam(value = "genreName") String genreName) {
 		return readGenresGS(genreName);
 	}
 
+	@Transactional
 	@RequestMapping(value = "/admin/readBorrowers", method = RequestMethod.GET, produces = "application/json")
 	public List<Borrower> readBorrowers(@RequestParam(value = "name") String name) {
 		return readBorrowersGS(name);
 	}
 
+	@Transactional
 	@RequestMapping(value = "/admin/readPublishers", method = RequestMethod.GET, produces = "application/json")
 	public List<Publisher> readPublishers(@RequestParam(value = "publisherName") String publisherName) {
 		return readPublishersGS(publisherName);
 	}
 
+	@Transactional
 	@RequestMapping(value = "/admin/addBook", method = RequestMethod.POST, consumes = "application/json")
 	public void addBook(@RequestBody Book book) {
 
@@ -75,6 +83,7 @@ public class AdminService extends GeneralService {
 		}
 	}
 
+	@Transactional
 	@RequestMapping(value = "/admin/addAuthor", method = RequestMethod.POST, consumes = "application/json")
 	public void addAuthor(@RequestBody Author author) {
 
@@ -88,7 +97,8 @@ public class AdminService extends GeneralService {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@Transactional
 	@RequestMapping(value = "/admin/addGenre", method = RequestMethod.POST, consumes = "application/json")
 	public void addGenre(@RequestBody Genre genre) {
 
@@ -100,6 +110,7 @@ public class AdminService extends GeneralService {
 		}
 	}
 	
+	@Transactional
 	@RequestMapping(value = "/admin/addPublisher", method = RequestMethod.POST, consumes = "application/json")
 	public void addPublisher(@RequestBody Publisher publisher) {
 
@@ -112,7 +123,8 @@ public class AdminService extends GeneralService {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@Transactional
 	@RequestMapping(value = "/admin/addLibraryBranch", method = RequestMethod.POST, consumes = "application/json")
 	public void addLibraryBranch(@RequestBody LibraryBranch libraryBranch) {
 
@@ -125,6 +137,7 @@ public class AdminService extends GeneralService {
 		}
 	}
 
+	@Transactional
 	@RequestMapping(value = "/admin/addBorrower", method = RequestMethod.POST, consumes = "application/json")
 	public void addBorrower(@RequestBody Borrower borrower) {
 
@@ -137,7 +150,8 @@ public class AdminService extends GeneralService {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@Transactional
 	@RequestMapping(value = "/admin/addBookLoan", method = RequestMethod.POST, consumes = "application/json")
 	public void addBookLoan(@RequestBody BookLoan bookLoan) {
 
@@ -148,7 +162,8 @@ public class AdminService extends GeneralService {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@Transactional
 	@RequestMapping(value = "/admin/updateBook", method = RequestMethod.POST, consumes = "application/json")
 	public void updateBook(@RequestBody Book book) {
 
@@ -160,6 +175,7 @@ public class AdminService extends GeneralService {
 		}
 	}
 
+	@Transactional
 	@RequestMapping(value = "/admin/updateAuthor", method = RequestMethod.POST, consumes = "application/json")
 	public void updateAuthor(@RequestBody Author author) {
 
@@ -170,7 +186,8 @@ public class AdminService extends GeneralService {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@Transactional
 	@RequestMapping(value = "/admin/updateGenre", method = RequestMethod.POST, consumes = "application/json")
 	public void updateGenre(@RequestBody Genre genre) {
 
@@ -182,6 +199,7 @@ public class AdminService extends GeneralService {
 		}
 	}
 	
+	@Transactional
 	@RequestMapping(value = "/admin/updatePublisher", method = RequestMethod.POST, consumes = "application/json")
 	public void updatePublisher(@RequestBody Publisher publisher) {
 
@@ -193,6 +211,7 @@ public class AdminService extends GeneralService {
 		}
 	}
 	
+	@Transactional
 	@RequestMapping(value = "/admin/updateLibraryBranch", method = RequestMethod.POST, consumes = "application/json")
 	public void updateLibraryBranch(@RequestBody LibraryBranch libraryBranch) {
 
@@ -204,6 +223,7 @@ public class AdminService extends GeneralService {
 		}
 	}
 
+	@Transactional
 	@RequestMapping(value = "/admin/updateBorrower", method = RequestMethod.POST, consumes = "application/json")
 	public void updateBorrower(@RequestBody Borrower borrower) {
 
@@ -215,6 +235,7 @@ public class AdminService extends GeneralService {
 		}
 	}
 	
+	@Transactional
 	public void deleteBook(@RequestBody Book book) {
 
 		try {
@@ -225,6 +246,7 @@ public class AdminService extends GeneralService {
 		}
 	}
 
+	@Transactional
 	@RequestMapping(value = "/admin/deleteAuthor", method = RequestMethod.POST, consumes = "application/json")
 	public void deleteAuthor(@RequestBody Author author) {
 
@@ -236,6 +258,7 @@ public class AdminService extends GeneralService {
 		}
 	}
 	
+	@Transactional
 	@RequestMapping(value = "/admin/deleteGenre", method = RequestMethod.POST, consumes = "application/json")
 	public void deleteGenre(@RequestBody Genre genre) {
 
@@ -247,6 +270,7 @@ public class AdminService extends GeneralService {
 		}
 	}
 	
+	@Transactional
 	@RequestMapping(value = "/admin/deletePublisher", method = RequestMethod.POST, consumes = "application/json")
 	public void deletePublisher(@RequestBody Publisher publisher) {
 
@@ -258,6 +282,7 @@ public class AdminService extends GeneralService {
 		}
 	}
 	
+	@Transactional
 	@RequestMapping(value = "/admin/deleteLibraryBranch", method = RequestMethod.POST, consumes = "application/json")
 	public void deleteLibraryBranch(@RequestBody LibraryBranch libraryBranch) {
 
@@ -269,6 +294,7 @@ public class AdminService extends GeneralService {
 		}
 	}
 
+	@Transactional
 	@RequestMapping(value = "/admin/deleteBorrower", method = RequestMethod.POST, consumes = "application/json")
 	public void deleteBorrower(@RequestBody Borrower borrower) {
 
@@ -280,6 +306,7 @@ public class AdminService extends GeneralService {
 		}
 	}
 	
+	@Transactional
 	@RequestMapping(value = "/admin/overrideBL", method = RequestMethod.POST, consumes = "application/json")
 	public boolean overrideBookLoan(Integer bookId, Integer branchId, Integer cardNo) {
 		BookLoan bookLoan = new BookLoan();
@@ -296,6 +323,7 @@ public class AdminService extends GeneralService {
 		return false;
 	}
 	
+	@Transactional
 	public BookLoan getBookLoan(Integer bookId, Integer branchId, Integer cardNo) {
 		BookLoan bookLoan = new BookLoan();
 		bookLoan.setBookId(bookId);

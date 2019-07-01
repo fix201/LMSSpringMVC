@@ -3,6 +3,7 @@ package com.gcit.lms.service;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,11 +15,12 @@ import com.gcit.lms.entity.LibraryBranch;
 
 public class LibrarianService extends GeneralService {
 
-	@RequestMapping(value = "/librarian/readLibraryBranches", method = RequestMethod.GET, produces = "application/json")
+	@Transactional @RequestMapping(value = "/librarian/readLibraryBranches", method = RequestMethod.GET, produces = "application/json")
 	public List<LibraryBranch> readLibraryBranches(@RequestParam(value = "branchName") String branchName) {
 		return readBranchesGS(branchName);
 	}
 	
+	@Transactional 
 	@RequestMapping(value = "/librarian/updateLibraryBranch", method = RequestMethod.POST, consumes = "application/json")
 	public boolean updateBranch(@RequestBody LibraryBranch libraryBranch) {
 
@@ -31,6 +33,7 @@ public class LibrarianService extends GeneralService {
 		return false;
 	}
 
+	@Transactional 
 	@RequestMapping(value = "/librarian/updateBranchCopies", method = RequestMethod.POST, consumes = "application/json")
 	public boolean updateBranchCopies(@RequestBody BookCopies bookCopies) {
 
@@ -43,6 +46,7 @@ public class LibrarianService extends GeneralService {
 		return false;
 	}
 
+	@Transactional 
 	@RequestMapping(value = "/librarian/addBookCopy", method = RequestMethod.POST, consumes = "application/json")
 	public boolean addBookCopy(@RequestBody BookCopies bookCopies) {
 
@@ -55,6 +59,7 @@ public class LibrarianService extends GeneralService {
 		return false;
 	}
 
+	@Transactional 
 	@RequestMapping(value = "/librarian/getBookCopiesForBranch", method = RequestMethod.GET, produces = "application/json")
 	public List<Book> getBookCopiesForBranch(@RequestParam(value = "branchId") Integer branchId) {
 
@@ -68,6 +73,7 @@ public class LibrarianService extends GeneralService {
 		return null;
 	}
 
+	@Transactional 
 	@RequestMapping(value = "/librarian/getNoOfCopiesForBranch", method = RequestMethod.GET, produces = "application/json")
 	public BookCopies getNoOfCopiesForBranch(@RequestParam(value = "bookId") Integer bookId, @RequestParam(value = "branchId") Integer branchId) {
 
